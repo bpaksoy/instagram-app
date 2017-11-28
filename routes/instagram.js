@@ -7,7 +7,7 @@ const superagent = require('superagent')
 
 router.get('/:username', function(req, res){
 
-    const url = 'https://wwww.instagram.com/14streety/?_a=1'
+    const url = 'https://wwww.instagram.com/'+ req.params.username + '/?_a=1' 
 
     superagent.get(url)
     .query(null)
@@ -20,10 +20,25 @@ router.get('/:username', function(req, res){
         })
         return
       }
-      res.json(response.body)
-    })
 
-  })
+      const user = response.body.user
+      const feed = user.media.nodes
+
+      let parsed = []
+      feed.forEach((post, i) => {
+        parsed.push({
+          image: post.thumbnail_src,
+          caption: post.caption
+        })
+      })
+
+      res.json({
+        feed: parsed
+      })
+
+      // res.json(response.body)
+    })
+})
 
 
 module.exports = router

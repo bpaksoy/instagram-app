@@ -7,7 +7,8 @@ class InstagramFeed extends Component {
   constructor() {
     super()
     this.state = {
-      username: ''
+      username: '',
+      feed: [ ]
     }
   }
 
@@ -33,10 +34,11 @@ class InstagramFeed extends Component {
       }
 
       console.log('FEED: '+ JSON.stringify(response.body))
-      // res.json(response.body)
+      this.setState({
+        feed: response.body.feed
+      })
     })
-
-  })
+}
 
   }
 
@@ -55,7 +57,16 @@ class InstagramFeed extends Component {
           </div>
 
           <div className="col-md-9">
-
+            <div className="row">
+              { this.state.feed.map((post, i) => {
+                return (
+                  <div key={i} className="col-md-3">
+                    <img style={{width:100:'%'}} src={post.image} />
+                  </div>
+                )
+              })
+            }
+            </div>
 
           </div>
 
